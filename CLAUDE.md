@@ -28,4 +28,13 @@ npm run typecheck  # tsc --noEmit
 npm run build      # type check + production build
 npm run preview    # serve the production build
 npm test           # Vitest, run once
+npm run snapshot          # eazybi-data/*.csv + squads.json -> public/data/snapshot.json
+npm run snapshot:sample   # fictional exports from the dummy data, then convert
 ```
+
+## Real data (eazyBI)
+
+- Set `VITE_DATA_SOURCE=eazybi` and `VITE_SNAPSHOT_URL=./data/snapshot.json` in `.env.local`. Default is the dummy data.
+- `eazybi-data/` (exports) and `public/data/` (snapshots) are git-ignored. Never commit either.
+- The converter prints counts and column names only. `--verbose` adds team names, for local use. Errors name file, row and column, never the value (dates excepted).
+- The converter lives in `src/data/sources/eazybi/`; a test checks the sample round trip reproduces the dummy metrics.

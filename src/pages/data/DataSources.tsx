@@ -4,7 +4,7 @@ import { toMs } from '../../metrics'
 
 const ADAPTERS = [
   { name: 'Dummy data', status: 'Live in POC', note: 'Seeded, generated in the browser.' },
-  { name: 'eazyBI snapshot', status: 'Next', note: 'Exports converted to the canonical snapshot.' },
+  { name: 'eazyBI snapshot', status: 'Ready', note: 'Exports converted to the canonical snapshot.' },
   { name: 'Jira changelog (direct)', status: 'Later', note: 'Read straight from Jira once eazyBI is retired.' },
 ]
 const PIPELINE = ['eazyBI / Jira', 'Extraction', 'Canonical snapshot', 'Portal']
