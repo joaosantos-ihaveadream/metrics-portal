@@ -18,10 +18,10 @@ export interface Scorecard {
 
 const days = (ms: number) => ms / DAY_MS
 
-const doneIn = (items: WorkItem[], w: Window) =>
+export const doneIn = (items: WorkItem[], w: Window) =>
   items.filter((i) => i.doneAt && inWindow(toMs(i.doneAt), w))
 
-const cycleDays = (items: WorkItem[]) =>
+export const cycleDays = (items: WorkItem[]) =>
   items.filter((i) => i.startedAt).map((i) => days(toMs(i.doneAt!) - toMs(i.startedAt!)))
 
 const leadDays = (items: WorkItem[]) => items.map((i) => days(toMs(i.doneAt!) - toMs(i.createdAt)))
@@ -29,7 +29,7 @@ const leadDays = (items: WorkItem[]) => items.map((i) => days(toMs(i.doneAt!) - 
 const sprintsIn = (sprints: Sprint[], w: Window) => sprints.filter((s) => inWindow(toMs(s.endDate), w))
 
 /** Open work at a moment: started and not done. */
-const wipAt = (items: WorkItem[], at: number) =>
+export const wipAt = (items: WorkItem[], at: number) =>
   items.filter((i) => i.startedAt && toMs(i.startedAt) <= at && (!i.doneAt || toMs(i.doneAt) > at))
 
 function sprintVelocity(s: Sprint) {
@@ -40,19 +40,23 @@ function weeklyCounts(items: WorkItem[], w: Window): number[] {
   return weekBuckets(w).map((b) => doneIn(items, b).length)
 }
 
+/** Done counts per day for the `span` days up to `end`: bucket = floor((doneAt − historyStart) / 1 day), historyStart < doneAt ≤ end. */
 function dailyCounts(items: WorkItem[], end: number, span: number): number[] {
+  const start = end - span * DAY_MS
   const counts = new Array<number>(span).fill(0)
   for (const i of items) {
     if (!i.doneAt) continue
-    const ago = Math.floor((end - toMs(i.doneAt)) / DAY_MS)
-    if (ago >= 0 && ago < span) counts[span - 1 - ago]++
+    const done = toMs(i.doneAt)
+    if (done > start && done <= end) counts[Math.min(span - 1, Math.floor((done - start) / DAY_MS))]++
   }
   return counts
 }
 
+/** Step back weekly while the step's end is still inside the window: 5 for 30 days, 13 for 90, 26 for 180. */
+export const accuracySteps = (winDays: number) => Math.max(1, Math.ceil(winDays / 7))
+
 function accuracy(items: WorkItem[], w: Window): number | null {
-  const winDays = Math.round(days(w.end - w.start))
-  const steps = Math.max(1, Math.floor((winDays - HORIZON_DAYS) / 7) + 1)
+  const steps = accuracySteps(Math.round(days(w.end - w.start)))
   let hit = 0
   let made = 0
   for (let k = 0; k < steps; k++) {

@@ -20,7 +20,7 @@ export function createRng(seed: number): Rng {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296
   }
   const normal = () => {
-    const u = 1 - next()
+    const u = next() || Number.MIN_VALUE
     const v = next()
     return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v)
   }

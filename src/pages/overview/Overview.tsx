@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { MdFavoriteBorder, MdFileDownload, MdPieChartOutline, MdSchedule, MdSentimentSatisfied } from 'react-icons/md'
 import { DeltaChip } from '../../components/DeltaChip'
+import { downloadCsv } from '../../components/download'
 import { EmptyState } from '../../components/EmptyState'
 import { KpiTile } from '../../components/KpiTile'
 import { MetricDelta } from '../../components/MetricDelta'
@@ -61,15 +62,6 @@ export function healthBands(rows: TeamRow[]): Record<Signal, number> {
 
 export const healthFooter = (b: Record<Signal, number>, n: number) =>
   `${b['on-track']} of ${n} teams score 80+ - ${b['needs-attention']} below 50`
-
-function download(name: string, text: string) {
-  const url = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }))
-  const a = document.createElement('a')
-  a.href = url
-  a.download = name
-  a.click()
-  URL.revokeObjectURL(url)
-}
 
 function MoverLine({ label, mover }: { label: string; mover: PulseMover }) {
   const up = mover.delta > 0
@@ -306,7 +298,7 @@ export function Overview() {
               {filter && <span className="ml-2 text-body-sm font-normal text-on-surface-variant">{SIGNAL_LABEL[filter]} only · <button type="button" className="font-semibold text-primary hover:underline" onClick={() => setFilter(null)}>show all</button></span>}
             </h2>
             <button
-              type="button" onClick={() => download('team-health-matrix.csv', teamsCsv(shown))}
+              type="button" onClick={() => downloadCsv('team-health-matrix.csv', teamsCsv(shown))}
               className="inline-flex items-center gap-1 rounded-control border border-outline-variant bg-white px-3 py-1.5 text-label-md hover:bg-surface-container-low"
             >
               <MdFileDownload size={16} aria-hidden /> Export CSV

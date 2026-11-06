@@ -99,7 +99,7 @@ function generateWorkItems(
   main: Rng, categories: Rng, profile: TeamProfile, squad: Squad, initiatives: Initiative[], snapshot: number,
 ): WorkItem[] {
   const items: WorkItem[] = []
-  const historyStart = Math.floor(snapshot / DAY_MS) * DAY_MS - HISTORY_DAYS * DAY_MS
+  const historyStart = snapshot - HISTORY_DAYS * DAY_MS
   const span = snapshot - historyStart
   const progress = (ms: number) => clamp((ms - historyStart) / span, 0, 1)
   const streamInitiatives = initiatives.filter((i) => i.valueStreamId === squad.valueStreamId)
@@ -157,16 +157,19 @@ function generateSprints(main: Rng, profile: TeamProfile, squad: Squad, snapshot
     const committed = Math.max(8, profile.velocity.mean * (1 + profile.velocity.noise * main.normal()))
     const sayDo = clamp(lerp(profile.sayDo, t) + 0.05 * main.normal(), 0.3, 1)
     const added = Math.max(0, committed * (profile.scopeChange + 0.06 * main.normal()))
-    const completedCommitted = committed * sayDo
-    const completedAdded = added * main.between(0.4, 0.9)
-    const removed = committed * main.between(0, 0.08)
+    // Points are whole numbers: round first, then derive the completed figures from the rounded ones.
+    const committedPts = Math.round(committed)
+    const addedPts = Math.round(added)
+    const completedCommitted = committedPts * sayDo
+    const completedAdded = addedPts * main.between(0.4, 0.9)
+    const removed = committedPts * main.between(0, 0.08)
     const goalMet = main.chance(sayDo >= 0.8 ? 0.85 : sayDo >= 0.65 ? 0.5 : 0.2)
     const number = FIRST_SPRINT_NUMBER + i
     sprints.push({
       id: `${squad.id}-sprint-${number}`, squadId: squad.id, name: `${profile.name} Sprint ${number}`,
       startDate: iso(end - 14 * DAY_MS), endDate: iso(end),
-      committedPoints: Math.round(committed), completedCommittedPoints: Math.round(completedCommitted),
-      addedPoints: Math.round(added), completedAddedPoints: Math.round(completedAdded),
+      committedPoints: committedPts, completedCommittedPoints: Math.round(completedCommitted),
+      addedPoints: addedPts, completedAddedPoints: Math.round(completedAdded),
       removedPoints: Math.round(removed),
       goal: SPRINT_GOALS[i % SPRINT_GOALS.length], goalMet,
     })

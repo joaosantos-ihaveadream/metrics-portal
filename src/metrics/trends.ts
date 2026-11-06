@@ -39,3 +39,10 @@ export function trend(dataset: Dataset, squadIds: string[], id: MetricId): Trend
     }
   })
 }
+
+/** e.g. "trailing 4-week windows, every 2 weeks". */
+export function trendWindowText(id: MetricId): string {
+  const spec = TREND_SPECS[id] ?? DEFAULT_SPEC
+  const weeks = (d: number) => `${d / 7}-week`
+  return `trailing ${weeks(spec.window)} windows, every ${spec.step / 7} weeks`
+}

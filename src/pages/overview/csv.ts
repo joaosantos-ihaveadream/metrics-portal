@@ -18,7 +18,7 @@ export const CSV_METRICS: { id: MetricId; header: string; value: (r: TeamRow) =>
   { id: 'forecastAccuracy', header: 'Forecasting accuracy', value: (r) => r.current.values.forecastAccuracy },
 ]
 
-const cell = (v: string) => (/[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v)
+export const cell = (v: string) => (/[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v)
 
 export function teamsCsv(rows: TeamRow[]): string {
   const head = ['Team', 'Domain', 'Delivery Lead', 'Pod', 'Team type', 'Signal', ...CSV_METRICS.map((m) => m.header)]

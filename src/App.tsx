@@ -1,5 +1,8 @@
 import { Shell } from './components/Shell'
+import { Flow } from './pages/flow/Flow'
+import { Health } from './pages/health/Health'
 import { Overview } from './pages/overview/Overview'
+import { Quality } from './pages/quality/Quality'
 import { Placeholder } from './pages/Placeholder'
 import { activeNavId, resolve } from './router/routes'
 import { usePath } from './router/hashRouter'
@@ -17,6 +20,12 @@ export function App() {
         <Placeholder title={route.title} note="Coming soon." />
       ) : route.id === 'overview' ? (
         <Overview />
+      ) : route.id === 'health' ? (
+        <Health />
+      ) : route.id === 'flow' ? (
+        <Flow />
+      ) : route.id === 'quality' ? (
+        <Quality />
       ) : (
         <Placeholder title={route.title} />
       )}

@@ -12,16 +12,18 @@ export interface LineChartProps {
   series: LineSeries[]
   target?: { value: number; label: string }
   area?: boolean
+  /** Top of the y-axis; defaults to the data maximum. */
+  yMax?: number
   height?: number
   format?: (v: number) => string
 }
 
-export function LineChart({ labels, series, target, area, height = 240, format = String }: LineChartProps) {
+export function LineChart({ labels, series, target, area, yMax, height = 240, format = String }: LineChartProps) {
   const [ref, width] = useWidth<HTMLDivElement>()
   const [tip, setTip] = useState<TooltipData | null>(null)
   const all = series.flatMap((s) => s.values).filter((v): v is number => v !== null)
   if (target) all.push(target.value)
-  const ticks = niceTicks(Math.min(0, ...all), Math.max(...(all.length ? all : [1])))
+  const ticks = niceTicks(Math.min(0, ...all), yMax ?? Math.max(...(all.length ? all : [1])))
   const y = linear(ticks[0], ticks[ticks.length - 1], height - PAD.bottom, PAD.top)
   const x = linear(0, Math.max(1, labels.length - 1), PAD.left, width - PAD.right)
   const legend: LegendItem[] = series.map((s, i) => ({ label: s.name, colour: SERIES_COLOURS[i % 4] }))
