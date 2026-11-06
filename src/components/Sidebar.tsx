@@ -61,10 +61,10 @@ export function Sidebar({ activeId, collapsed, onToggleCollapsed, drawerOpen, on
         ].join(' ')}
         aria-label="Primary"
       >
-        <div className={['flex h-16 items-center gap-3 px-5', narrow ? 'md:justify-center md:px-0' : ''].join(' ')}>
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-secondary-fixed text-title-lg text-primary">D</div>
+        <div className={['flex items-center gap-3 border-b border-on-primary-fixed-variant/40 px-5 py-6', narrow ? 'md:justify-center md:px-0' : ''].join(' ')}>
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-secondary-fixed text-title-lg text-primary">C</div>
           <div className={narrow ? 'md:hidden' : ''}>
-            <div className="text-body-md font-semibold text-white">Delta Hub</div>
+            <div className="text-body-md font-semibold text-white">Core KPI Hub</div>
             <div className="text-label-sm text-on-primary-container">Insights &amp; Performance</div>
           </div>
         </div>
@@ -87,14 +87,14 @@ export function Sidebar({ activeId, collapsed, onToggleCollapsed, drawerOpen, on
           </Section>
         </nav>
 
-        <div className="border-t border-primary-container py-2">
+        <div className="border-t border-on-primary-fixed-variant/40 py-2">
           <ul>
             <Item item={dataNav} active={activeId === dataNav.id} collapsed={narrow} onNavigate={onCloseDrawer} />
           </ul>
           <button
             type="button"
             onClick={onToggleCollapsed}
-            className={['hidden w-full items-center gap-3 border-l-4 border-transparent px-4 py-2.5 text-left text-body-sm hover:bg-primary-container md:flex', narrow ? 'justify-center' : ''].join(' ')}
+            className={['hidden w-full items-center gap-3 border-l-4 border-transparent px-4 py-2.5 text-left text-body-sm text-on-primary-container hover:bg-primary-container md:flex', narrow ? 'justify-center' : ''].join(' ')}
             title={narrow ? 'Expand sidebar' : undefined}
           >
             {narrow ? <MdChevronRight size={20} aria-hidden /> : <MdChevronLeft size={20} aria-hidden />}

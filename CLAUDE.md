@@ -1,4 +1,4 @@
-# Delta Hub
+# Core KPI Hub
 
 Insights & Performance portal of delivery metrics. Proof of concept on seeded dummy data, built so a real source (eazyBI exports) can replace it without touching metrics or pages. Full spec: `build-spec.md`.
 
