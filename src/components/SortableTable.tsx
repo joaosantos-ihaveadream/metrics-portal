@@ -13,8 +13,8 @@ export interface Column<T> {
 }
 
 export function SortableTable<T>({
-  columns, rows, rowKey, initialSort,
-}: { columns: Column<T>[]; rows: T[]; rowKey: (r: T) => string; initialSort?: { id: string; desc?: boolean } }) {
+  columns, rows, rowKey, initialSort, onRowClick,
+}: { columns: Column<T>[]; rows: T[]; rowKey: (r: T) => string; initialSort?: { id: string; desc?: boolean }; onRowClick?: (r: T) => void }) {
   const [sort, setSort] = useState(initialSort ?? null)
   const sorted = useMemo(() => {
     const col = columns.find((c) => c.id === sort?.id)
@@ -62,7 +62,11 @@ export function SortableTable<T>({
         </thead>
         <tbody>
           {sorted.map((r) => (
-            <tr key={rowKey(r)} className="border-b border-surface-container last:border-0 hover:bg-surface-container-low">
+            <tr
+              key={rowKey(r)}
+              onClick={onRowClick && (() => onRowClick(r))}
+              className={['border-b border-surface-container last:border-0 hover:bg-surface-container-low', onRowClick ? 'cursor-pointer' : ''].join(' ')}
+            >
               {columns.map((c) => (
                 <td key={c.id} className={`px-4 py-3 ${c.align === 'right' ? 'text-right' : ''}`}>{c.render(r)}</td>
               ))}

@@ -22,6 +22,8 @@ export const pulseMean = (p: PulseCheck) => mean(PULSE_DIMENSIONS.map((d) => p.s
 export interface PulseMover {
   dimension: PulseDimension
   delta: number
+  /** Mean score now, over the same teams as the delta. */
+  current: number
 }
 
 /** Teams with a pulse in both windows; per dimension, mean score change. Either mover can be absent. */
@@ -35,12 +37,10 @@ export function pulseMovers(
   const prev = new Map(latestPulses(dataset, squadIds, previous).map((p) => [p.squadId, p]))
   const both = [...cur.keys()].filter((id) => prev.has(id))
   if (!both.length) return { rise: null, fall: null }
-  const deltas: PulseMover[] = PULSE_DIMENSIONS.map((dimension) => ({
-    dimension,
-    delta:
-      (mean(both.map((id) => cur.get(id)!.scores[dimension])) as number) -
-      (mean(both.map((id) => prev.get(id)!.scores[dimension])) as number),
-  }))
+  const deltas: PulseMover[] = PULSE_DIMENSIONS.map((dimension) => {
+    const current = mean(both.map((id) => cur.get(id)!.scores[dimension])) as number
+    return { dimension, current, delta: current - (mean(both.map((id) => prev.get(id)!.scores[dimension])) as number) }
+  })
   const rise = deltas.reduce((a, b) => (b.delta > a.delta ? b : a))
   const fall = deltas.reduce((a, b) => (b.delta < a.delta ? b : a))
   return { rise: rise.delta > 0 ? rise : null, fall: fall.delta < 0 ? fall : null }

@@ -1,4 +1,5 @@
 import { Shell } from './components/Shell'
+import { Overview } from './pages/overview/Overview'
 import { Placeholder } from './pages/Placeholder'
 import { activeNavId, resolve } from './router/routes'
 import { usePath } from './router/hashRouter'
@@ -14,6 +15,8 @@ export function App() {
         </>
       ) : route.kind === 'coming' ? (
         <Placeholder title={route.title} note="Coming soon." />
+      ) : route.id === 'overview' ? (
+        <Overview />
       ) : (
         <Placeholder title={route.title} />
       )}

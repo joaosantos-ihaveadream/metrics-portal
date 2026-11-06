@@ -139,7 +139,7 @@ function baseValues(dataset: Dataset, squadIds: string[], w: Window): Omit<Score
   return { values, categories }
 }
 
-const HEALTH_INPUTS = {
+export const HEALTH_INPUTS = {
   scrum: ['sayDo', 'cycleP85', 'velocityCv', 'scopeChange', 'leadP85', 'pulseScore'],
   kanban: ['cycleP85', 'throughputCv', 'leadP85', 'pulseScore'],
 } as const satisfies Record<string, readonly MetricId[]>
@@ -154,7 +154,7 @@ export function healthIndex(values: Values, teamType: 'scrum' | 'kanban'): numbe
   return scores.length >= MIN_HEALTH_INPUTS ? mean(scores) : null
 }
 
-const SIGNAL_METRICS = {
+export const SIGNAL_METRICS = {
   scrum: ['sayDo', 'scopeChange', 'velocityCv', 'cycleP85', 'ageingWipShare', 'bugRatio'],
   kanban: ['throughputCv', 'cycleP85', 'ageingWipShare', 'bugRatio'],
 } as const satisfies Record<string, readonly MetricId[]>
