@@ -79,6 +79,15 @@ body {
   overflow-x: hidden;
 }
 
+@layer base {
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  select,
+  summary {
+    cursor: pointer;
+  }
+}
+
 :focus-visible {
   outline: 2px solid var(--color-series-1);
   outline-offset: 2px;

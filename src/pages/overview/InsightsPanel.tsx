@@ -9,11 +9,11 @@ const TONE: Record<InsightTone, { label: string; cls: string }> = {
 }
 const MAX_CARDS = 6
 
-export function InsightsPanel({ insights }: { insights: Insight[] }) {
+export function InsightsPanel({ insights, title = 'Actionable insights' }: { insights: Insight[]; title?: string }) {
   return (
-    <section aria-label="Actionable insights">
+    <section aria-label={title}>
       <div className="mb-3 flex items-baseline justify-between">
-        <h2 className="text-title-lg text-on-surface">Actionable insights</h2>
+        <h2 className="text-title-lg text-on-surface">{title}</h2>
         <span className="text-label-md text-on-surface-variant">
           {insights.length} {insights.length === 1 ? 'signal' : 'signals'} · rule-based
         </span>

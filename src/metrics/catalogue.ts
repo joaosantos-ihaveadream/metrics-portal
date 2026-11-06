@@ -36,20 +36,20 @@ const BOTH: TeamType[] = ['scrum', 'kanban']
 /** Ratios are stored as fractions (0.8 = 80%). Thresholds use the same unit as the value. */
 export const CATALOGUE: Record<MetricId, MetricDefinition> = {
   sayDo: {
-    id: 'sayDo', name: 'Commitment reliability (Say/Do)', category: 'Delivery', unit: '%', direction: 'higher',
+    id: 'sayDo', name: 'Commitment reliability (Say/Do)', category: 'Predictability', unit: '%', direction: 'higher',
     teamTypes: SCRUM, thresholds: { good: 0.8, watch: 0.65 },
     description: 'How much of what a team committed to at sprint start it completed.',
     formula: 'Σ completed committed points ÷ Σ committed points, sprints ending in the window',
     source: 'Sprints',
   },
   scopeChange: {
-    id: 'scopeChange', name: 'Mid-sprint scope change', category: 'Delivery', unit: '%', direction: 'lower',
+    id: 'scopeChange', name: 'Mid-sprint scope change', category: 'Predictability', unit: '%', direction: 'lower',
     teamTypes: SCRUM, thresholds: { good: 0.15, watch: 0.3 },
     description: 'Points added after a sprint started, relative to the commitment.',
     formula: 'Σ added points ÷ Σ committed points', source: 'Sprints',
   },
   velocity: {
-    id: 'velocity', name: 'Velocity', category: 'Delivery', unit: 'pts', direction: 'neutral',
+    id: 'velocity', name: 'Velocity', category: 'Predictability', unit: 'pts', direction: 'neutral',
     teamTypes: SCRUM,
     description: 'Average points completed per sprint.',
     formula: 'mean of (completed committed + completed added) per sprint',
@@ -57,14 +57,14 @@ export const CATALOGUE: Record<MetricId, MetricDefinition> = {
     caveat: 'Single team only. Never compare velocity across teams.',
   },
   velocityCv: {
-    id: 'velocityCv', name: 'Velocity variability', category: 'Delivery', unit: '%', direction: 'lower',
+    id: 'velocityCv', name: 'Velocity variability', category: 'Predictability', unit: '%', direction: 'lower',
     teamTypes: SCRUM, thresholds: { good: 0.2, watch: 0.3 },
     description: 'How steady a team’s sprint velocity is.',
     formula: 'stdev ÷ mean of sprint velocity per team (needs ≥ 3 sprints); groups = median team',
     source: 'Sprints',
   },
   goalHitRate: {
-    id: 'goalHitRate', name: 'Sprint goal hit rate', category: 'Delivery', unit: '%', direction: 'higher',
+    id: 'goalHitRate', name: 'Sprint goal hit rate', category: 'Predictability', unit: '%', direction: 'higher',
     teamTypes: SCRUM, thresholds: { good: 0.7, watch: 0.5 },
     description: 'Share of sprints where the sprint goal was met.',
     formula: 'sprints with goal met ÷ sprints with a recorded outcome', source: 'Sprints',
@@ -77,7 +77,7 @@ export const CATALOGUE: Record<MetricId, MetricDefinition> = {
     caveat: 'Teams size and split work differently, so compare across teams with care.',
   },
   throughputCv: {
-    id: 'throughputCv', name: 'Throughput variability', category: 'Flow', unit: '%', direction: 'lower',
+    id: 'throughputCv', name: 'Throughput variability', category: 'Predictability', unit: '%', direction: 'lower',
     teamTypes: KANBAN, thresholds: { good: 0.35, watch: 0.5 },
     description: 'How steady weekly throughput is.',
     formula: 'stdev ÷ mean of weekly done counts (weeks = window ÷ 7, at least 2); groups = median team',
@@ -141,14 +141,14 @@ export const CATALOGUE: Record<MetricId, MetricDefinition> = {
     formula: 'items done per category ÷ items done', source: 'Work items',
   },
   deliveryForecast: {
-    id: 'deliveryForecast', name: 'Delivery forecast', category: 'Forecasting', unit: 'items', direction: 'neutral',
+    id: 'deliveryForecast', name: 'Delivery forecast', category: 'Forecast', unit: 'items', direction: 'neutral',
     teamTypes: BOTH,
     description: 'Items likely to be finished in the next 14 days.',
     formula: 'Monte Carlo: 2,000 runs of 14 days drawn from the last 84 days; 15th percentile, rounded down',
     source: 'Work items',
   },
   forecastAccuracy: {
-    id: 'forecastAccuracy', name: 'Forecasting accuracy', category: 'Forecasting', unit: '%', direction: 'higher',
+    id: 'forecastAccuracy', name: 'Forecasting accuracy', category: 'Forecast', unit: '%', direction: 'higher',
     teamTypes: BOTH, thresholds: { good: 0.8, watch: 0.65 },
     description: 'How often past forecasts came true.',
     formula: 'share of past weekly forecasts where actual ≥ forecast',

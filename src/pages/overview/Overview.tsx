@@ -76,7 +76,7 @@ function MoverLine({ label, mover }: { label: string; mover: PulseMover }) {
   )
 }
 
-const columns: Column<TeamRow>[] = [
+export const teamMatrixColumns: Column<TeamRow>[] = [
   {
     id: 'team', header: 'Team', sortValue: (r) => r.squad.name,
     render: (r) => (
@@ -305,7 +305,7 @@ export function Overview() {
             </button>
           </div>
           <SortableTable
-            columns={columns} rows={shown} rowKey={(r) => r.squad.id}
+            columns={teamMatrixColumns} rows={shown} rowKey={(r) => r.squad.id}
             initialSort={{ id: 'signal' }}
             onRowClick={(r) => { window.location.hash = `/teams/${r.squad.id}` }}
           />
