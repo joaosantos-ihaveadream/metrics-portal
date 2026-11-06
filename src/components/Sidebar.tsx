@@ -62,7 +62,7 @@ export function Sidebar({ activeId, collapsed, onToggleCollapsed, drawerOpen, on
         aria-label="Primary"
       >
         <div className={['flex items-center gap-3 border-b border-on-primary-fixed-variant/40 px-5 py-6', narrow ? 'md:justify-center md:px-0' : ''].join(' ')}>
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-secondary-fixed text-title-lg text-primary">C</div>
+          <img src="/delta-icon-light.svg" alt="Core KPI Hub" className="h-8 w-auto shrink-0" />
           <div className={narrow ? 'md:hidden' : ''}>
             <div className="text-body-md font-semibold text-white">Core KPI Hub</div>
             <div className="text-label-sm text-on-primary-container">Insights &amp; Performance</div>
