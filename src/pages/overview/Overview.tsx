@@ -59,6 +59,9 @@ export function healthBands(rows: TeamRow[]): Record<Signal, number> {
   return out
 }
 
+export const healthFooter = (b: Record<Signal, number>, n: number) =>
+  `${b['on-track']} of ${n} teams score 80+ - ${b['needs-attention']} below 50`
+
 function download(name: string, text: string) {
   const url = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }))
   const a = document.createElement('a')
@@ -215,7 +218,7 @@ export function Overview() {
           deltaNote={note} signal={signalFor('healthIndex', current.values.healthIndex)}
           footer={single
             ? `Built from ${inputs.length ? inputs.join(', ') : 'no scored inputs yet'}`
-            : `${bands['on-track']} of ${rows.length} teams on track · ${bands['needs-attention']} need attention`}
+            : healthFooter(bands, rows.length)}
         />
         <KpiTile
           label="Pulse check" icon={MdSentimentSatisfied}

@@ -5,7 +5,7 @@ import { wholePercents } from './categories'
 import { teamsCsv } from './csv'
 import { buildHighlights, pickHighlights } from './highlights'
 import { buildInsights, insightsForTeam } from './insights'
-import { healthBands } from './Overview'
+import { healthBands, healthFooter } from './Overview'
 import { teamRows } from './teamRows'
 import type { Values } from '../../metrics'
 
@@ -95,6 +95,9 @@ describe('overview on the seeded dataset', () => {
     expect(b['on-track'] + b.watch + b['needs-attention']).toBeLessThanOrEqual(12)
     expect(b['on-track']).toBe(rows.filter((r) => (r.current.values.healthIndex ?? 0) >= 80).length)
     expect(b['needs-attention']).toBe(rows.filter((r) => r.current.values.healthIndex !== null && r.current.values.healthIndex < 50).length)
+  })
+  it('words the health footer from the band counts', () => {
+    expect(healthFooter(healthBands(rows), rows.length)).toBe('7 of 12 teams score 80+ - 0 below 50')
   })
   it('categories add up to 100', () => {
     const w = wholePercents(current.categories)!
