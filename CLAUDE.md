@@ -27,6 +27,5 @@ npm run dev        # Vite dev server, port 5173
 npm run typecheck  # tsc --noEmit
 npm run build      # type check + production build
 npm run preview    # serve the production build
+npm test           # Vitest, run once
 ```
-
-Tests (Vitest) arrive in step 3 of the spec.
